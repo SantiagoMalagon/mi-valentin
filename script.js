@@ -1,122 +1,77 @@
-// --- CONFIGURACIÓN Y ELEMENTOS ---
-const elements = {
-    introScreen: document.getElementById('intro-screen'),
-    questionScreen: document.getElementById('question-screen'),
-    successScreen: document.getElementById('success-screen'),
-    yesBtn: document.getElementById('yes-btn'),
-    noBtn: document.getElementById('no-btn'),
-    recipientName: document.getElementById('recipient-name'),
-    recipientFinal: document.getElementById('recipient-final'),
-    senderName: document.getElementById('sender-name'),
-    celebrationContainer: document.getElementById('celebration-container')
+// ELEMENTOS
+const screens = {
+    intro: document.getElementById('intro-screen'),
+    transition: document.getElementById('transition-screen'),
+    question: document.getElementById('question-screen'),
+    success: document.getElementById('success-screen')
 };
 
-// --- 1. INICIALIZACIÓN (Leer nombres de la URL) ---
+const buttons = {
+    yes: document.getElementById('yes-btn'),
+    no: document.getElementById('no-btn')
+};
+
+// DATOS URL
 const urlParams = new URLSearchParams(window.location.search);
-// Usamos decodeURIComponent para que los tildes y espacios se vean bien
-const fromName = decodeURIComponent(urlParams.get('from') || 'Tu Admirador');
-const toName = decodeURIComponent(urlParams.get('to') || 'Persona Especial');
+const fromName = decodeURIComponent(urlParams.get('from') || 'Santiago');
+const toName = decodeURIComponent(urlParams.get('to') || 'La patrona');
 
-elements.recipientName.innerText = toName;
-elements.recipientFinal.innerText = toName;
-elements.senderName.innerText = fromName;
-
-// --- 2. CONTROL DE PANTALLAS ---
-let gameStarted = false;
-function startGame() {
-    if (gameStarted) return;
-    gameStarted = true;
-    // Pequeño delay para la transición
-    elements.introScreen.style.opacity = '0';
-    setTimeout(() => {
-        elements.introScreen.classList.add('hidden');
-        elements.questionScreen.classList.remove('hidden');
-    }, 500);
-}
-// Iniciar con cualquier interacción
-document.addEventListener('keydown', startGame, { once: true });
-document.addEventListener('click', startGame, { once: true });
-document.addEventListener('touchstart', startGame, { once: true });
-
-
-// --- 3. LÓGICA DEL BOTÓN "SÍ" ---
-elements.yesBtn.addEventListener('click', () => {
-    elements.questionScreen.style.transform = 'scale(1.1)';
-    elements.questionScreen.style.opacity = '0';
-    
-    setTimeout(() => {
-        elements.questionScreen.classList.add('hidden');
-        elements.successScreen.classList.remove('hidden');
-        celebrateSuccess(); // ¡Lanzar confeti de corazones!
-    }, 500);
+// LLENAR TEXTOS
+document.getElementById('recipient-name').innerText = toName;
+document.getElementById('recipient-final').innerText = toName;
+document.getElementById('recipient-final-2').innerText = toName;
+document.getElementById('sender-name').innerText = fromName;
+// Llenar footers
+['sender-footer', 'sender-footer-2', 'sender-footer-3', 'sender-footer-4'].forEach(id => {
+    document.getElementById(id).innerText = fromName;
 });
 
+// --- SECUENCIA DE PANTALLAS ---
 
-// --- 4. LÓGICA DEL BOTÓN "NO" (IMPOSIBLE) ---
-// Usamos mouseover (PC) y touchstart (Móvil) antes de que puedan hacer click
-['mouseover', 'touchstart'].forEach(eventType => {
-    elements.noBtn.addEventListener(eventType, (e) => {
-        e.preventDefault(); // Evitar comportamientos por defecto en móvil
-        moveButton(e.target);
-    });
-});
-
-function moveButton(btn) {
-    // Área segura (margen) para que no se salga totalmente de la pantalla
-    const margin = 30; 
-    const maxWidth = window.innerWidth - btn.offsetWidth - margin;
-    const maxHeight = window.innerHeight - btn.offsetHeight - margin;
-
-    // Generar nueva posición aleatoria dentro de los límites seguros
-    // Math.max(margin, ...) asegura que no se vaya muy a la izquierda/arriba
-    const newX = Math.max(margin, Math.random() * maxWidth);
-    const newY = Math.max(margin, Math.random() * maxHeight);
-
-    // Aplicar movimiento
-    btn.style.position = 'fixed'; // Asegurar que sea fixed al moverse
-    btn.style.left = newX + 'px';
-    btn.style.top = newY + 'px';
+// 1. CLICK EN INTRO -> VA A TRANSICIÓN
+function startSequence() {
+    screens.intro.classList.add('hidden');
+    screens.transition.classList.remove('hidden');
     
-    // Añadir un pequeño giro divertido
-    const randomRot = (Math.random() - 0.5) * 30;
-    btn.style.transform = `rotate(${randomRot}deg) scale(0.9)`;
-    setTimeout(() => { btn.style.transform = 'rotate(0deg) scale(1)'; }, 200);
-}
+    // Opcional: Iniciar música aquí si tienes el archivo
+    // document.getElementById('bg-music').play().catch(e => console.log("Click para audio requerido"));
 
-
-// --- 5. EFECTO DE CELEBRACIÓN (Corazones flotantes) ---
-function celebrateSuccess() {
-    // Crear 50 corazones en intervalos
-    let count = 0;
-    const interval = setInterval(() => {
-        createFloatingHeart();
-        count++;
-        if (count > 50) clearInterval(interval);
-    }, 100);
-}
-
-function createFloatingHeart() {
-    const heart = document.createElement('div');
-    heart.innerHTML = ['❤️', '💖', '💕', '💘', '💝'][Math.floor(Math.random() * 5)];
-    heart.classList.add('floating-heart');
-    
-    // Posición inicial aleatoria en la parte inferior
-    heart.style.left = Math.random() * 100 + 'vw';
-    heart.style.bottom = '-50px';
-    
-    // Variables CSS personalizadas para la animación
-    const duration = Math.random() * 3 + 2 + 's'; // Entre 2 y 5 segundos
-    const travelDist = -(Math.random() * 500 + 300) + 'px'; // Distancia hacia arriba
-    const rotation = (Math.random() - 0.5) * 360 + 'deg';
-
-    heart.style.setProperty('--duration', duration);
-    heart.style.setProperty('--travel-dist', travelDist);
-    heart.style.setProperty('--rotation', rotation);
-    
-    elements.celebrationContainer.appendChild(heart);
-    
-    // Eliminar el elemento después de que termine su animación
+    // Esperar 3.5 segundos en la pantalla del perrito y pasar a la pregunta
     setTimeout(() => {
-        heart.remove();
-    }, parseFloat(duration) * 1000);
+        screens.transition.classList.add('hidden');
+        screens.question.classList.remove('hidden');
+    }, 3500);
 }
+
+// Escuchar click/tap en la intro
+screens.intro.addEventListener('click', startSequence);
+screens.intro.addEventListener('touchstart', startSequence);
+
+
+// 2. BOTÓN "NO" ESCAPISTA
+const moveNoButton = (e) => {
+    e.preventDefault(); // Evitar click en touch
+    const container = document.querySelector('.card');
+    const containerRect = container.getBoundingClientRect();
+    
+    // Límites (pantalla completa)
+    const maxX = window.innerWidth - buttons.no.offsetWidth - 20;
+    const maxY = window.innerHeight - buttons.no.offsetHeight - 20;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    buttons.no.style.position = 'fixed';
+    buttons.no.style.left = `${x}px`;
+    buttons.no.style.top = `${y}px`;
+};
+
+buttons.no.addEventListener('mouseover', moveNoButton);
+buttons.no.addEventListener('touchstart', moveNoButton);
+
+// 3. BOTÓN "SÍ" -> FINAL
+buttons.yes.addEventListener('click', () => {
+    screens.question.classList.add('hidden');
+    screens.success.classList.remove('hidden');
+    // Aquí puedes lanzar confeti extra si quieres
+});
