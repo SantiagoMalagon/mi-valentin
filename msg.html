@@ -2,45 +2,58 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Valentine ❤️</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para ti ❤️</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-hearts"></div>
+    <div class="background-container">
+        <div class="floating-bg-hearts"></div>
+    </div>
 
-    <div id="intro-screen" class="screen">
-        <div class="content">
-            <h1 class="pixel-text">VALENTINE</h1>
-            <p class="blink">Presiona cualquier tecla o toca la pantalla para comenzar...</p>
+    <div id="intro-screen" class="screen focus-in">
+        <div class="content pulse-anim">
+            <h1 class="pixel-text title">VALENTINE</h1>
+            <p class="blink">Presiona para comenzar...</p>
+            <div class="floating-mini-hearts"></div>
         </div>
     </div>
 
     <div id="question-screen" class="screen hidden">
-        <div class="card">
-            <h1 class="pixel-text">
-                <span id="recipient-name">...</span>,
+        <div class="card slide-up">
+             <img src="https://media.tenor.com/LB5A4W9i3C4AAAAi/mocha-bear-hearts.gif" alt="Bear ask" class="top-gif">
+            
+            <h1 class="pixel-text main-question">
+                <span id="recipient-name" class="highlight-name">...</span>,
                 <br>¿quieres ser mi Valentine?
             </h1>
-            <div class="buttons">
-                <button id="yes-btn" class="pixel-btn green">Sí</button>
-                <button id="no-btn" class="pixel-btn red">NO</button>
-            </div>
+            <div class="buttons-container">
+                <button id="yes-btn" class="pixel-btn green hover-effect">¡Sí, claro!</button>
+                </div>
+            <button id="no-btn" class="pixel-btn red hover-effect fixed-btn">NO</button>
         </div>
     </div>
 
     <div id="success-screen" class="screen hidden">
-        <div class="card">
-            <h1 class="pixel-text">¡Gracias <span id="recipient-final"></span> por aceptar! 💘</h1>
-            <p class="pixel-text small">
-                <span id="sender-name"></span>: Me haces muy feliz. Eres mi persona favorita.
-            </p>
-            <p class="pixel-text small">
-                Te quiero mucho. Gracias por decir que sí. 💕
-            </p>
-            <div class="gifs">
-                <img src="https://media.tenor.com/gU8vX72v3p4AAAAi/bear-kiss-bear-love.gif" alt="Besos" width="100">
+        <div id="celebration-container"></div>
+        
+        <div class="card slide-up final-card">
+            <h1 class="pixel-text final-title">
+                ¡Gracias <span id="recipient-final" class="highlight-name"></span> por aceptar! 💕
+            </h1>
+            
+            <div class="final-message-box">
+                <p class="pixel-text body-text">
+                    <span id="sender-name" class="sender-highlight"></span>: Me haces muy feliz. Eres mi persona favorita en el mundo.
+                </p>
+                <p class="pixel-text body-text" style="margin-top: 15px;">
+                    Te quiero muchísimo. Gracias por decir que sí. 💖
+                </p>
+            </div>
+
+            <div class="gifs-container">
+                <img src="https://media.tenor.com/gU8vX72v3p4AAAAi/bear-kiss-bear-love.gif" alt="Besos" class="bottom-gif">
             </div>
         </div>
     </div>
