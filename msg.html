@@ -4,72 +4,271 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Valentine ❤️</title>
-    <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- ESTILOS VISUALES (COPIADOS DEL VIDEO) --- */
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            font-family: 'Press Start 2P', cursive;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: black; /* Color base por si falla algo */
+        }
+
+        .screen {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: opacity 0.5s, visibility 0.5s;
+            z-index: 10;
+        }
+        .hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+        /* --- PANTALLA 1: INTRO (OSCURA COMO EL VIDEO) --- */
+        #intro-screen {
+            background-color: #1a1a2e; /* Azul oscuro noche */
+            color: white;
+        }
+        
+        .title-pixel {
+            font-size: 2rem; 
+            color: #ff69b4; 
+            text-shadow: 4px 4px 0px #c71585, 2px 2px 0px white; /* Efecto 3D pixel */
+            margin-bottom: 2rem;
+            text-align: center;
+            letter-spacing: 2px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        .subtitle-blink {
+            font-size: 0.7rem; color: #ccc; text-align: center; line-height: 1.5;
+            margin-top: 20px; animation: blink 1s step-end infinite;
+        }
+
+        /* Lluvia de corazones intro */
+        .heart-rain {
+            position: absolute; top: -10%; color: #ff1493; font-size: 1.5rem;
+            animation: fall linear forwards; z-index: 1; opacity: 0.6;
+        }
+
+        /* --- PANTALLA 2: TRANSICIÓN (CIELO Y PERRO) --- */
+        #transition-screen {
+            background-color: #87CEEB; /* Azul cielo exacto */
+            position: relative;
+        }
+        
+        .cloud {
+            position: absolute; color: white; opacity: 0.8; font-size: 3rem;
+            text-shadow: 0px 4px 0px rgba(0,0,0,0.1);
+            animation: moveCloud linear infinite;
+        }
+
+        .dog-wrapper {
+            position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center;
+        }
+        
+        .dog-pixel {
+            width: 100px; image-rendering: pixelated; 
+            position: relative; top: 5px; z-index: 5;
+            animation: dogPeek 3s ease-out forwards;
+        }
+        
+        .wall {
+            width: 300px; height: 120px; 
+            background: #8B4513; /* Café madera */
+            border: 4px solid #3e1e05; border-bottom: none;
+            position: relative; z-index: 10;
+            box-shadow: 0px 10px 20px rgba(0,0,0,0.3);
+        }
+        /* Líneas de la madera */
+        .wall::after {
+            content: ''; position: absolute; top: 20px; left: 0; width: 100%; height: 4px; background: #3e1e05; opacity: 0.3;
+        }
+
+        /* --- PANTALLA 3 Y 4: CARTA (ROSA) --- */
+        .pink-bg {
+            background: linear-gradient(180deg, #ffb6c1 0%, #ff69b4 100%); /* Degradado rosa */
+        }
+
+        .card-pixel {
+            background: white;
+            border: 6px double #ff1493; /* Marco doble estilo retro */
+            border-radius: 15px;
+            padding: 25px;
+            width: 85%; max-width: 320px;
+            text-align: center;
+            box-shadow: 8px 8px 0px rgba(0,0,0,0.2);
+            position: relative;
+        }
+
+        .question-text {
+            font-size: 1rem; line-height: 1.6; color: #333; margin-bottom: 25px;
+        }
+        
+        .highlight-green { color: #00c853; text-shadow: 1px 1px 0 #b9f6ca; }
+
+        /* Botones idénticos al video */
+        .btn-container { display: flex; justify-content: center; gap: 15px; min-height: 50px; position: relative; }
+        
+        .btn-pixel {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 0.9rem; padding: 10px 15px;
+            border: 3px solid black; box-shadow: 4px 4px 0px black;
+            cursor: pointer; text-transform: uppercase;
+            background: white; color: black;
+            transition: transform 0.1s;
+        }
+        .btn-pixel:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px black; }
+        
+        .btn-yes { background: #4caf50; color: white; }
+        .btn-no { background: #f44336; color: white; position: absolute; right: 0; }
+
+        /* Final */
+        .final-msg { font-size: 0.7rem; text-align: left; margin-top: 15px; line-height: 1.8; color: #444; }
+        .footer-credit {
+            position: absolute; bottom: 10px; font-size: 0.5rem; 
+            background: rgba(0,0,0,0.4); color: white; padding: 4px 8px; border-radius: 4px;
+        }
+
+        /* --- ANIMACIONES --- */
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes fall { to { transform: translateY(110vh); } }
+        @keyframes moveCloud { from { transform: translateX(-150px); } to { transform: translateX(100vw); } }
+        @keyframes dogPeek { 
+            0% { transform: translateY(100%); } 
+            40% { transform: translateY(0); } 
+            100% { transform: translateY(0); } 
+        }
+
+    </style>
 </head>
 <body>
 
-    <div id="intro-screen" class="screen intro-bg">
-        <div class="rain-hearts"></div>
-        <div class="content">
-            <h1 class="pixel-text title-main">VALENTINE</h1>
-            <div class="hearts-decor">💕 💗 💖</div>
-            <p class="blink">Presiona cualquier tecla<br>para comenzar...</p>
-        </div>
-        <div class="footer-pixel">Created by <span id="sender-footer">Santiago</span></div>
+    <div id="intro-screen" class="screen" onclick="startFlow()">
+        <div id="hearts-container"></div>
+        
+        <h1 class="title-pixel">VALENTINE</h1>
+        <p class="subtitle-blink">
+            Presiona cualquier tecla<br>para comenzar...
+        </p>
+        <div class="footer-credit">Created by <span class="sender-name"></span></div>
     </div>
 
-    <div id="transition-screen" class="screen sky-bg hidden">
-        <div class="cloud cloud1">☁️</div>
-        <div class="cloud cloud2">☁️</div>
-        <div class="cloud cloud3">☁️</div>
-        
-        <div class="dog-container">
-            <img src="https://media.tenor.com/M1Xj8Y7xRlkAAAAi/dog-pixel.gif" alt="Pixel Dog" class="pixel-dog">
+    <div id="transition-screen" class="screen hidden">
+        <div class="cloud" style="top:10%; left:-10%; animation-duration: 15s;">☁️</div>
+        <div class="cloud" style="top:25%; left:-20%; animation-duration: 20s; animation-delay: 2s;">☁️</div>
+        <div class="cloud" style="top:5%; left:-15%; animation-duration: 12s; animation-delay: 5s;">☁️</div>
+
+        <div class="dog-wrapper">
+            <img src="https://media.tenor.com/M1Xj8Y7xRlkAAAAi/dog-pixel.gif" class="dog-pixel" alt="dog">
             <div class="wall"></div>
         </div>
-        <div class="footer-pixel">Created by <span id="sender-footer-2">Santiago</span></div>
+        <div class="footer-credit">Created by <span class="sender-name"></span></div>
     </div>
 
     <div id="question-screen" class="screen pink-bg hidden">
-        <div class="card bounce-in">
-            <h1 class="pixel-text question-text">
-                <span id="recipient-name">La patrona</span><span class="heart-green">💚</span>,
+        <div class="card-pixel">
+            <h1 class="question-text">
+                <span id="recipient-name">Ella</span><span class="highlight-green">💚</span>,
                 <br>¿quieres ser mi<br>Valentine?
             </h1>
             
-            <div class="buttons-container">
-                <button id="yes-btn" class="pixel-btn green">SÍ</button>
-                <button id="no-btn" class="pixel-btn red">NO</button>
+            <div class="btn-container">
+                <button id="yes-btn" class="btn-pixel btn-yes">SÍ</button>
+                <button id="no-btn" class="btn-pixel btn-no">NO</button>
             </div>
         </div>
-        <div class="footer-pixel">Created by <span id="sender-footer-3">Santiago</span></div>
+        <div class="footer-credit">Created by <span class="sender-name"></span></div>
     </div>
 
     <div id="success-screen" class="screen pink-bg hidden">
-        <div class="card">
-            <h1 class="pixel-text final-title">
+        <div class="card-pixel" style="max-width:350px;">
+            <h1 class="question-text" style="color:#e91e63; margin-bottom:10px;">
                 ¡Gracias <span id="recipient-final"></span><br>por aceptar! 💕
             </h1>
             
-            <div class="final-body">
-                <p class="pixel-text message">
-                    <span id="sender-name"></span>: Me haces muy feliz. Eres mi persona favorita.
-                </p>
-                <p class="pixel-text message">
-                    Te quiero mucho, <span id="recipient-final-2"></span><span class="heart-green">💚</span>.
-                    <br>Gracias por decir que sí. 💕
-                </p>
+            <div class="final-msg">
+                <p><span class="sender-name" style="color:#e91e63; font-weight:bold;"></span>: Me haces muy feliz. Eres mi persona favorita.</p>
+                <br>
+                <p>Te quiero mucho, <span id="recipient-final-2"></span><span class="highlight-green">💚</span>.<br>Gracias por decir que sí. 💘</p>
             </div>
             
-            <div class="floating-sticker s1">💖</div>
-            <div class="floating-sticker s2">💘</div>
-            <div class="floating-sticker s3">💝</div>
-            <div class="floating-sticker s4">💗</div>
+            <div style="font-size:1.5rem; margin-top:20px;">💖 💝 💗</div>
         </div>
-        <div class="footer-pixel">Created by <span id="sender-footer-4">Santiago</span></div>
+        <div class="footer-credit">Created by <span class="sender-name"></span></div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        // --- CONFIGURACIÓN DE NOMBRES ---
+        const urlParams = new URLSearchParams(window.location.search);
+        const fromName = decodeURIComponent(urlParams.get('from') || 'Santiago');
+        const toName = decodeURIComponent(urlParams.get('to') || 'La Patrona');
+
+        // Llenar textos automáticamente
+        document.querySelectorAll('.sender-name').forEach(el => el.innerText = fromName);
+        document.getElementById('recipient-name').innerText = toName;
+        document.getElementById('recipient-final').innerText = toName;
+        document.getElementById('recipient-final-2').innerText = toName;
+
+        // --- LÓGICA DE PANTALLAS ---
+        const intro = document.getElementById('intro-screen');
+        const transition = document.getElementById('transition-screen');
+        const question = document.getElementById('question-screen');
+        const success = document.getElementById('success-screen');
+
+        // Generar lluvia de corazones en la intro
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.innerText = '❤️';
+            heart.className = 'heart-rain';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = Math.random() * 3 + 2 + 's';
+            heart.style.fontSize = Math.random() * 1 + 0.5 + 'rem';
+            document.getElementById('hearts-container').appendChild(heart);
+            setTimeout(() => heart.remove(), 5000);
+        }
+        setInterval(createHeart, 300);
+
+        // 1. Iniciar Secuencia
+        let started = false;
+        function startFlow() {
+            if (started) return;
+            started = true;
+            intro.classList.add('hidden');
+            transition.classList.remove('hidden');
+
+            // Esperar 3.5 segundos en la pantalla del perro y pasar a la pregunta
+            setTimeout(() => {
+                transition.classList.add('hidden');
+                question.classList.remove('hidden');
+            }, 3500);
+        }
+        // Soporte para touch y click
+        window.addEventListener('keydown', startFlow);
+
+        // 2. Botón NO imposible
+        const noBtn = document.getElementById('no-btn');
+        const moveNo = (e) => {
+            e.preventDefault();
+            const x = Math.random() * (window.innerWidth - 100);
+            const y = Math.random() * (window.innerHeight - 50);
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = x + 'px';
+            noBtn.style.top = y + 'px';
+        };
+        noBtn.addEventListener('mouseover', moveNo);
+        noBtn.addEventListener('touchstart', moveNo);
+
+        // 3. Botón SÍ
+        document.getElementById('yes-btn').addEventListener('click', () => {
+            question.classList.add('hidden');
+            success.classList.remove('hidden');
+        });
+    </script>
 </body>
 </html>
