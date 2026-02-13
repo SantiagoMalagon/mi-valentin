@@ -1,95 +1,107 @@
-/* --- RESET Y BASE --- */
+/* --- CONFIGURACIÓN BASE --- */
 * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
+
 body {
     font-family: 'Press Start 2P', cursive;
-    background: linear-gradient(135deg, #6a4e94, #433d8b); /* Degradado morado */
-    color: #333;
-    height: 100vh; /* Altura fija */
-    height: -webkit-fill-available; /* Fix para iOS */
+    height: 100vh;
+    height: -webkit-fill-available;
     overflow: hidden;
-    display: flex; justify-content: center; align-items: center;
-    perspective: 1000px;
+    position: relative;
 }
 
-/* --- ANIMACIONES DE FONDO --- */
-.background-container {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; pointer-events: none;
-}
-.floating-bg-hearts {
-    width: 100%; height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath fill='%23ff8fab' d='M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z'/%3E%3C/svg%3E");
-    opacity: 0.15;
-    animation: panBackground 20s linear infinite;
-}
-@keyframes panBackground { from { background-position: 0 0; } to { background-position: 100% 100%; } }
-
-/* --- ESTRUCTURA PRINCIPAL --- */
 .screen {
-    position: absolute; width: 100%; height: 100%;
-    display: flex; justify-content: center; align-items: center; flex-direction: column;
-    z-index: 10; transition: all 0.5s ease-in-out; padding: 20px;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    transition: opacity 0.5s;
+    z-index: 10;
 }
-.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(0.9); }
+.hidden { display: none !important; }
 
-/* Tarjeta estilo Pixel mejorada */
+/* --- PANTALLA 1: INTRO (OSCURA) --- */
+.intro-bg {
+    background-color: #1a1a2e; /* Azul oscuro noche */
+    color: white;
+}
+.title-main {
+    font-size: 2.5rem; color: #ff69b4; text-shadow: 4px 4px 0px #c71585;
+    margin-bottom: 20px; text-align: center;
+    animation: floatTitle 2s ease-in-out infinite;
+}
+.blink {
+    font-size: 0.8rem; color: #aaaaaa; text-align: center; line-height: 1.5;
+    margin-top: 40px; animation: blinker 1s infinite;
+}
+.hearts-decor { font-size: 1.5rem; margin: 10px 0; }
+
+/* Efecto lluvia de corazones (Intro) */
+.rain-hearts {
+    position: absolute; width: 100%; height: 100%; pointer-events: none;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="%23ff1493" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+    opacity: 0.4;
+    animation: rain 10s linear infinite;
+}
+@keyframes rain { from { background-position: 0 0; } to { background-position: 0 1000px; } }
+
+/* --- PANTALLA 2: TRANSICIÓN (CIELO) --- */
+.sky-bg { background-color: #87CEEB; /* Azul cielo */ position: relative; }
+.cloud { font-size: 4rem; position: absolute; opacity: 0.8; color: white; text-shadow: 2px 2px 0 #ddd; }
+.cloud1 { top: 10%; left: 10%; animation: floatCloud 15s linear infinite; }
+.cloud2 { top: 20%; right: 10%; animation: floatCloud 20s linear infinite reverse; }
+.cloud3 { top: 5%; left: 50%; animation: floatCloud 12s linear infinite; }
+
+.dog-container {
+    position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+}
+.pixel-dog { width: 120px; margin-bottom: -5px; position: relative; z-index: 2; animation: dogUp 2s ease-out forwards; }
+.wall { width: 300px; height: 150px; background: #8B4513; border: 4px solid #5c2e08; border-bottom: none; z-index: 3; }
+
+/* --- PANTALLA 3 Y 4: CARTA (ROSA) --- */
+.pink-bg {
+    background: linear-gradient(180deg, #ffb6c1 0%, #ff69b4 100%);
+}
 .card {
-    background: #fff0f5; /* Rosa muy claro */
-    border: 4px solid #ff4d88;
-    padding: 2rem 1.5rem;
+    background: white;
+    border: 6px double #ff1493; /* Borde doble rosa fuerte */
+    border-radius: 15px;
+    padding: 30px 20px;
+    width: 90%; max-width: 350px;
     text-align: center;
-    border-radius: 20px;
-    box-shadow: 
-        0 0 0 4px #fff inset,
-        6px 6px 0px #9c27b0, /* Sombra morada pixel */
-        12px 12px 20px rgba(0,0,0,0.3); /* Sombra suave */
-    max-width: 90%; width: 380px; position: relative;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    position: relative;
 }
-.final-card { background: #ffe6ee; border-color: #ff8fab; }
 
-/* --- TEXTOS --- */
-.pixel-text { line-height: 1.6; color: #5c3c92; text-shadow: 2px 2px 0px #ffb6c1; }
-.title { font-size: 2rem; color: #ff4d88; margin-bottom: 30px; animation: pulse 1.5s infinite; }
-.main-question { font-size: 1.1rem; margin: 20px 0; }
-.final-title { font-size: 1.3rem; color: #e91e63; margin-bottom: 25px; }
-.body-text { font-size: 0.8rem; color: #4a4a4a; text-shadow: none; }
-.highlight-name { color: #00c853; text-shadow: 2px 2px 0px #b9f6ca; } /* Verde para el nombre destino */
-.sender-highlight { color: #ff5722; } /* Naranja para quien envía */
-.blink { font-size: 0.7rem; color: white; margin-top: 40px; animation: blinker 1s step-end infinite; }
-@keyframes blinker { 50% { opacity: 0; } }
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.question-text { font-size: 1.1rem; line-height: 1.8; color: #333; margin-bottom: 30px; }
+.heart-green { color: #00c853; } /* Corazón verde específico */
+.final-title { font-size: 1.3rem; color: #e91e63; margin-bottom: 20px; text-shadow: 2px 2px 0 #ffcdd2; }
+.message { font-size: 0.8rem; line-height: 1.6; text-align: left; margin-bottom: 15px; color: #333; }
 
-/* --- IMÁGENES --- */
-.top-gif { width: 120px; margin-top: -60px; position: relative; z-index: 20; filter: drop-shadow(4px 4px 0 rgba(0,0,0,0.1)); }
-.bottom-gif { width: 140px; margin-top: 20px; border-radius: 10px; border: 3px solid #ff8fab; }
-
-/* --- BOTONES MEJORADOS --- */
-.buttons-container { display: flex; justify-content: center; margin-top: 30px; min-height: 60px; position: relative; width: 100%; }
+/* BOTONES PIXEL EXACTOS */
+.buttons-container { display: flex; justify-content: center; gap: 20px; position: relative; height: 60px; }
 .pixel-btn {
-    font-family: 'Press Start 2P', cursive; font-size: 0.8rem; padding: 12px 24px;
-    border: 3px solid #333; border-radius: 8px; cursor: pointer;
-    box-shadow: 0 6px 0 #333, 0 15px 20px rgba(0,0,0,0.2);
-    transition: all 0.1s ease; text-transform: uppercase; outline: none;
-    position: relative; top: 0;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1rem; padding: 10px 20px; border: 3px solid #000;
+    box-shadow: 4px 4px 0px #000; /* Sombra negra dura */
+    cursor: pointer; text-transform: uppercase;
 }
-.pixel-btn:active { top: 6px; box-shadow: 0 0 0 #333, 0 5px 10px rgba(0,0,0,0.2); }
-.green { background: #4caf50; color: white; text-shadow: 1px 1px 0 #388e3c; }
-.green:hover { background: #5cb860; }
-.red { background: #f44336; color: white; text-shadow: 1px 1px 0 #d32f2f; }
-.fixed-btn { position: absolute; /* Importante para que se mueva */ left: 55%; top: 0; }
+.pixel-btn:active { transform: translate(2px, 2px); box-shadow: 2px 2px 0px #000; }
+.green { background-color: #4caf50; color: white; }
+.red { background-color: #f44336; color: white; position: absolute; right: 0; }
 
-/* --- EFECTOS DE ENTRADA Y SALIDA --- */
-.slide-up { animation: slideUp 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
-@keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-.focus-in { animation: focusIn 0.7s cubic-bezier(0.55, 0.085, 0.68, 0.53) both; }
-@keyframes focusIn { from { filter: blur(12px); opacity: 0; } to { filter: blur(0px); opacity: 1; } }
+/* --- EXTRAS --- */
+.footer-pixel {
+    position: absolute; bottom: 10px; font-size: 0.6rem; 
+    background: rgba(0,0,0,0.5); color: white; padding: 5px 10px; border-radius: 5px;
+}
+.floating-sticker { position: absolute; font-size: 1.5rem; animation: floatSticker 3s infinite ease-in-out; }
+.s1 { top: -10px; right: -10px; }
+.s2 { bottom: -10px; left: -10px; animation-delay: 0.5s; }
+.s3 { top: 50%; left: -20px; animation-delay: 1s; }
+.s4 { top: 50%; right: -20px; animation-delay: 1.5s; }
 
-/* --- CORAZONES FLOTANTES (JS) --- */
-.floating-heart {
-    position: absolute; pointer-events: none; font-size: 20px; z-index: 100;
-    animation: floatUpAndFade var(--duration) ease-in forwards;
-}
-@keyframes floatUpAndFade {
-    0% { transform: translateY(0) scale(0.5) rotate(0deg); opacity: 0; }
-    20% { opacity: 1; }
-    100% { transform: translateY(var(--travel-dist)) scale(1.5) rotate(var(--rotation)); opacity: 0; }
-}
+/* ANIMACIONES */
+@keyframes blinker { 50% { opacity: 0; } }
+@keyframes floatTitle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@keyframes floatCloud { from { transform: translateX(-100px); } to { transform: translateX(100px); } }
+@keyframes floatSticker { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px) rotate(10deg); } }
+@keyframes dogUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
