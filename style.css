@@ -1,0 +1,132 @@
+/* Reset y Fuente */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive; /* Fuente Pixel */
+    background-color: #5e5ba8; /* Morado de fondo */
+    color: #333;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fondo de corazones cayendo (animación simple) */
+.background-hearts {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none;
+    background-image: url('https://img.icons8.com/emoji/48/000000/red-heart.png');
+    background-repeat: space;
+    opacity: 0.1;
+    z-index: 0;
+}
+
+/* Contenedor de Pantallas */
+.screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 10;
+    transition: opacity 0.5s;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Tarjeta Blanca Estilo Pixel */
+.card {
+    background: white;
+    border: 4px solid #ff69b4; /* Borde Rosa */
+    padding: 2rem;
+    text-align: center;
+    border-radius: 15px;
+    box-shadow: 
+        0 0 0 4px white inset, /* Doble borde blanco interno */
+        8px 8px 0px rgba(0,0,0,0.2); /* Sombra dura */
+    max-width: 90%;
+    width: 400px;
+    position: relative;
+}
+
+/* Textos */
+.pixel-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #ff4d4d;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 0px #ffcccc;
+}
+
+.pixel-text.small {
+    font-size: 0.7rem;
+    color: #333;
+    margin-top: 15px;
+}
+
+/* Botones Pixelados */
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    position: relative; /* Necesario para mover el NO */
+    min-height: 60px; /* Espacio para que se mueva */
+}
+
+.pixel-btn {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: 2px solid black;
+    cursor: pointer;
+    box-shadow: 4px 4px 0px black;
+    transition: transform 0.1s;
+    text-transform: uppercase;
+}
+
+.pixel-btn:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px black;
+}
+
+.green { background-color: #4caf50; color: white; }
+.red { background-color: #f44336; color: white; }
+
+/* El botón NO debe ser absolute para moverse libremente si es necesario, 
+   o usamos transform en JS. Aquí lo dejamos relative para empezar. */
+#no-btn {
+    position: absolute; /* Truco para moverlo fácil */
+    right: 20px; /* Posición inicial */
+}
+#yes-btn {
+    position: absolute;
+    left: 20px;
+}
+
+/* Intro Text */
+.blink {
+    color: white;
+    font-size: 0.8rem;
+    margin-top: 20px;
+    animation: blinker 1s linear infinite;
+    text-align: center;
+    padding: 20px;
+}
+
+@keyframes blinker {
+    50% { opacity: 0; }
+}
+
+/* Corazón verde del nombre */
+.heart-green { color: #4caf50; }
