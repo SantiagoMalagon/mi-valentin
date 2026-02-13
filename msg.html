@@ -3,59 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Para ti ❤️</title>
+    <title>Valentine ❤️</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="background-container">
-        <div class="floating-bg-hearts"></div>
-    </div>
 
-    <div id="intro-screen" class="screen focus-in">
-        <div class="content pulse-anim">
-            <h1 class="pixel-text title">VALENTINE</h1>
-            <p class="blink">Presiona para comenzar...</p>
-            <div class="floating-mini-hearts"></div>
+    <div id="intro-screen" class="screen intro-bg">
+        <div class="rain-hearts"></div>
+        <div class="content">
+            <h1 class="pixel-text title-main">VALENTINE</h1>
+            <div class="hearts-decor">💕 💗 💖</div>
+            <p class="blink">Presiona cualquier tecla<br>para comenzar...</p>
         </div>
+        <div class="footer-pixel">Created by <span id="sender-footer">Santiago</span></div>
     </div>
 
-    <div id="question-screen" class="screen hidden">
-        <div class="card slide-up">
-             <img src="https://media.tenor.com/LB5A4W9i3C4AAAAi/mocha-bear-hearts.gif" alt="Bear ask" class="top-gif">
-            
-            <h1 class="pixel-text main-question">
-                <span id="recipient-name" class="highlight-name">...</span>,
-                <br>¿quieres ser mi Valentine?
-            </h1>
-            <div class="buttons-container">
-                <button id="yes-btn" class="pixel-btn green hover-effect">¡Sí, claro!</button>
-                </div>
-            <button id="no-btn" class="pixel-btn red hover-effect fixed-btn">NO</button>
-        </div>
-    </div>
-
-    <div id="success-screen" class="screen hidden">
-        <div id="celebration-container"></div>
+    <div id="transition-screen" class="screen sky-bg hidden">
+        <div class="cloud cloud1">☁️</div>
+        <div class="cloud cloud2">☁️</div>
+        <div class="cloud cloud3">☁️</div>
         
-        <div class="card slide-up final-card">
-            <h1 class="pixel-text final-title">
-                ¡Gracias <span id="recipient-final" class="highlight-name"></span> por aceptar! 💕
+        <div class="dog-container">
+            <img src="https://media.tenor.com/M1Xj8Y7xRlkAAAAi/dog-pixel.gif" alt="Pixel Dog" class="pixel-dog">
+            <div class="wall"></div>
+        </div>
+        <div class="footer-pixel">Created by <span id="sender-footer-2">Santiago</span></div>
+    </div>
+
+    <div id="question-screen" class="screen pink-bg hidden">
+        <div class="card bounce-in">
+            <h1 class="pixel-text question-text">
+                <span id="recipient-name">La patrona</span><span class="heart-green">💚</span>,
+                <br>¿quieres ser mi<br>Valentine?
             </h1>
             
-            <div class="final-message-box">
-                <p class="pixel-text body-text">
-                    <span id="sender-name" class="sender-highlight"></span>: Me haces muy feliz. Eres mi persona favorita en el mundo.
-                </p>
-                <p class="pixel-text body-text" style="margin-top: 15px;">
-                    Te quiero muchísimo. Gracias por decir que sí. 💖
-                </p>
-            </div>
-
-            <div class="gifs-container">
-                <img src="https://media.tenor.com/gU8vX72v3p4AAAAi/bear-kiss-bear-love.gif" alt="Besos" class="bottom-gif">
+            <div class="buttons-container">
+                <button id="yes-btn" class="pixel-btn green">SÍ</button>
+                <button id="no-btn" class="pixel-btn red">NO</button>
             </div>
         </div>
+        <div class="footer-pixel">Created by <span id="sender-footer-3">Santiago</span></div>
+    </div>
+
+    <div id="success-screen" class="screen pink-bg hidden">
+        <div class="card">
+            <h1 class="pixel-text final-title">
+                ¡Gracias <span id="recipient-final"></span><br>por aceptar! 💕
+            </h1>
+            
+            <div class="final-body">
+                <p class="pixel-text message">
+                    <span id="sender-name"></span>: Me haces muy feliz. Eres mi persona favorita.
+                </p>
+                <p class="pixel-text message">
+                    Te quiero mucho, <span id="recipient-final-2"></span><span class="heart-green">💚</span>.
+                    <br>Gracias por decir que sí. 💕
+                </p>
+            </div>
+            
+            <div class="floating-sticker s1">💖</div>
+            <div class="floating-sticker s2">💘</div>
+            <div class="floating-sticker s3">💝</div>
+            <div class="floating-sticker s4">💗</div>
+        </div>
+        <div class="footer-pixel">Created by <span id="sender-footer-4">Santiago</span></div>
     </div>
 
     <script src="script.js"></script>
